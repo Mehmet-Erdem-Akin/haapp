@@ -26,6 +26,7 @@
         "backgroundColor": "#4A90E2"
       },
       "package": "com.haapp.medication",
+      "versionCode": 1,
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "SCHEDULE_EXACT_ALARM",

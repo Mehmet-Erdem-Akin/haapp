@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { MedicationProvider } from './src/context/MedicationContext';
-import HomeScreen from './src/screens/HomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { AppProviders } from './src/components/AppProviders';
+import TabNavigator from './src/navigation/TabNavigator';
 import * as Notifications from 'expo-notifications';
 
 // Bildirim handler ayarları
@@ -38,15 +39,26 @@ const App: React.FC = () => {
     };
 
     registerForPushNotificationsAsync();
+
+    // Bildirim tıklama olaylarını dinle
+    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      const data = response.notification.request.content.data;
+      // Bildirimden gelen veriye göre işlem yapılabilir
+      // Örneğin: medicationId varsa ilaç ekranına yönlendir
+    });
+
+    return () => subscription.remove();
   }, []);
 
   return (
-    <MedicationProvider>
+    <AppProviders>
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
-        <HomeScreen />
+        <NavigationContainer>
+          <TabNavigator />
+        </NavigationContainer>
       </SafeAreaView>
-    </MedicationProvider>
+    </AppProviders>
   );
 };
 

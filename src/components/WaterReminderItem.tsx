@@ -1,50 +1,32 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Medication } from '../types/medication';
+import { WaterReminder } from '../types/water';
 
-interface MedicationItemProps {
-  medication: Medication;
-  isTaken?: boolean;
+interface WaterReminderItemProps {
+  reminder: WaterReminder;
   onEdit: () => void;
   onDelete: () => void;
-  onTaken?: () => void;
 }
 
-const MedicationItem: React.FC<MedicationItemProps> = ({
-  medication,
-  isTaken = false,
+const WaterReminderItem: React.FC<WaterReminderItemProps> = ({
+  reminder,
   onEdit,
   onDelete,
-  onTaken,
 }) => {
   return (
-    <View style={[styles.container, isTaken && styles.takenContainer]}>
+    <View style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name}>{medication.name}</Text>
-          {isTaken && <Text style={styles.takenBadge}>✓ İçildi</Text>}
-        </View>
-        <Text style={styles.dosage}>{medication.dosage}</Text>
+        <Text style={styles.amount}>{reminder.amount}ml</Text>
         <View style={styles.timeContainer}>
           <Text style={styles.timeLabel}>⏰ Saat:</Text>
-          <Text style={styles.time}>{medication.time}</Text>
+          <Text style={styles.time}>{reminder.time}</Text>
         </View>
       </View>
       <View style={styles.actions}>
-        {!isTaken && onTaken && (
-          <TouchableOpacity
-            style={[styles.button, styles.takenButton]}
-            onPress={onTaken}
-            accessibilityLabel="İçildi olarak işaretle"
-            accessibilityRole="button"
-          >
-            <Text style={styles.takenButtonText}>✓</Text>
-          </TouchableOpacity>
-        )}
         <TouchableOpacity
           style={[styles.button, styles.editButton]}
           onPress={onEdit}
-          accessibilityLabel="İlacı düzenle"
+          accessibilityLabel="Hatırlatmayı düzenle"
           accessibilityRole="button"
         >
           <Text style={styles.buttonText}>✏️</Text>
@@ -52,7 +34,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
         <TouchableOpacity
           style={[styles.button, styles.deleteButton]}
           onPress={onDelete}
-          accessibilityLabel="İlacı sil"
+          accessibilityLabel="Hatırlatmayı sil"
           accessibilityRole="button"
         >
           <Text style={styles.buttonText}>🗑️</Text>
@@ -77,38 +59,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  takenContainer: {
-    backgroundColor: '#F0F9FF',
-    borderLeftWidth: 4,
-    borderLeftColor: '#4A90E2',
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  takenBadge: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#4A90E2',
-    backgroundColor: '#E8F4F8',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
   content: {
     flex: 1,
   },
-  name: {
+  amount: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  dosage: {
-    fontSize: 16,
-    color: '#666',
+    color: '#4A90E2',
     marginBottom: 8,
   },
   timeContainer: {
@@ -142,18 +99,10 @@ const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: '#FFE8E8',
   },
-  takenButton: {
-    backgroundColor: '#4A90E2',
-  },
-  takenButtonText: {
-    fontSize: 18,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
   buttonText: {
     fontSize: 20,
   },
 });
 
-export default MedicationItem;
+export default WaterReminderItem;
 
