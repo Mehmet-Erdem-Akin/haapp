@@ -28,18 +28,31 @@ export const DailyProvider: React.FC<DailyProviderProps> = ({ children, medicati
   const getTodayRecord = (): DailyRecord => {
     const today = getTodayDate();
     let todayRecord = records.find((r) => r.date === today);
+    const now = new Date();
 
     if (!todayRecord) {
       // Bugün için kayıt yoksa oluştur
       todayRecord = {
         date: today,
         medications: medications.length > 0 
-          ? medications.map((med) => ({
-              medicationId: med.id,
-              medicationName: med.name,
-              time: med.time,
-              taken: false,
-            }))
+          ? medications.map((med) => {
+              const [hours, minutes] = med.time.split(':').map(Number);
+              const medTime = new Date();
+              medTime.setHours(hours, minutes, 0, 0);
+              
+              // Eğer ilaç saati geçmişse ve 30 dk içinde işaretlenmemişse, missed olarak işaretle
+              const timeDiff = now.getTime() - medTime.getTime();
+              const thirtyMinutes = 30 * 60 * 1000;
+              const isMissed = timeDiff > thirtyMinutes && timeDiff > 0;
+              
+              return {
+                medicationId: med.id,
+                medicationName: med.name,
+                time: med.time,
+                taken: false,
+                missed: isMissed,
+              };
+            })
           : [],
         water: [],
       };
@@ -48,19 +61,55 @@ export const DailyProvider: React.FC<DailyProviderProps> = ({ children, medicati
         setRecords([...records, todayRecord!]);
       });
     } else {
-      // Mevcut kayıt varsa, yeni ilaçları ekle
+      // Mevcut kayıt varsa, yeni ilaçları ekle ve geçmiş ilaçları kontrol et
       const existingIds = todayRecord.medications.map((m) => m.medicationId);
       const newMedications = medications
         .filter((med) => !existingIds.includes(med.id))
-        .map((med) => ({
-          medicationId: med.id,
-          medicationName: med.name,
-          time: med.time,
-          taken: false,
-        }));
+        .map((med) => {
+          const [hours, minutes] = med.time.split(':').map(Number);
+          const medTime = new Date();
+          medTime.setHours(hours, minutes, 0, 0);
+          
+          const timeDiff = now.getTime() - medTime.getTime();
+          const thirtyMinutes = 30 * 60 * 1000;
+          const isMissed = timeDiff > thirtyMinutes && timeDiff > 0;
+          
+          return {
+            medicationId: med.id,
+            medicationName: med.name,
+            time: med.time,
+            taken: false,
+            missed: isMissed,
+          };
+        });
+      
+      // Mevcut ilaçları kontrol et - eğer saati geçmişse ve 30 dk içinde işaretlenmemişse missed olarak işaretle
+      todayRecord.medications = todayRecord.medications.map((med) => {
+        if (med.taken) {
+          return med;
+        }
+        
+        const [hours, minutes] = med.time.split(':').map(Number);
+        const medTime = new Date();
+        medTime.setHours(hours, minutes, 0, 0);
+        
+        const timeDiff = now.getTime() - medTime.getTime();
+        const thirtyMinutes = 30 * 60 * 1000;
+        const isMissed = timeDiff > thirtyMinutes && timeDiff > 0;
+        
+        return {
+          ...med,
+          missed: isMissed,
+        };
+      });
       
       if (newMedications.length > 0) {
         todayRecord.medications = [...todayRecord.medications, ...newMedications];
+        dailyStorageService.saveRecord(todayRecord).then(() => {
+          setRecords(records.map((r) => (r.date === today ? todayRecord! : r)));
+        });
+      } else {
+        // Sadece missed durumunu güncelle
         dailyStorageService.saveRecord(todayRecord).then(() => {
           setRecords(records.map((r) => (r.date === today ? todayRecord! : r)));
         });

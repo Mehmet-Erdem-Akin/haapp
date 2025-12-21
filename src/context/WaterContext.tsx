@@ -50,6 +50,36 @@ export const WaterProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
+  const addBulkReminders = async (remindersData: Omit<WaterReminder, 'id' | 'notificationId'>[]) => {
+    try {
+      const newReminders: WaterReminder[] = [];
+      let baseId = Date.now();
+
+      for (const reminderData of remindersData) {
+        const newReminder: WaterReminder = {
+          ...reminderData,
+          id: `${baseId}-${newReminders.length}`,
+        };
+
+        try {
+          const notificationId = await waterNotificationService.scheduleNotification(newReminder);
+          newReminder.notificationId = notificationId;
+        } catch (notificationError) {
+          console.warn('Bildirim oluşturulamadı, hatırlatma yine de kaydediliyor:', notificationError);
+        }
+
+        newReminders.push(newReminder);
+      }
+
+      const updatedReminders = [...reminders, ...newReminders];
+      setReminders(updatedReminders);
+      await waterStorageService.saveReminders(updatedReminders);
+    } catch (error) {
+      console.error('Toplu su hatırlatması eklenirken hata:', error);
+      throw error;
+    }
+  };
+
   const updateReminder = async (id: string, updates: Partial<WaterReminder>) => {
     try {
       const updatedReminders = reminders.map((reminder) => {
@@ -99,6 +129,7 @@ export const WaterProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       value={{
         reminders,
         addReminder,
+        addBulkReminders,
         updateReminder,
         deleteReminder,
         loadReminders,

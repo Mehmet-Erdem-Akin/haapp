@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { WaterReminder } from '../types/water';
 
 interface WaterReminderItemProps {
@@ -14,95 +14,47 @@ const WaterReminderItem: React.FC<WaterReminderItemProps> = ({
   onDelete,
 }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.amount}>{reminder.amount}ml</Text>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeLabel}>⏰ Saat:</Text>
-          <Text style={styles.time}>{reminder.time}</Text>
+    <View 
+      className="rounded-[20px] p-4 mb-3 flex-row justify-between items-center border border-gray-300 overflow-hidden"
+      style={{ 
+        backgroundColor: '#FFFFFF',
+        shadowColor: '#002BE0', 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.15, 
+        shadowRadius: 8, 
+        elevation: 3 
+      }}
+    >
+      <View className="flex-1">
+        <Text className="text-xl font-bold text-primary mb-2">{reminder.amount}ml</Text>
+        <View className="flex-row items-center">
+          <Text className="text-sm text-gray-600 mr-1.5">⏰ Saat:</Text>
+          <Text className="text-base font-semibold text-primary">{reminder.time}</Text>
         </View>
       </View>
-      <View style={styles.actions}>
+      <View className="flex-row gap-2">
         <TouchableOpacity
-          style={[styles.button, styles.editButton]}
+          className="w-12 h-12 rounded-[24px] justify-center items-center bg-accent-100 border border-accent-200"
           onPress={onEdit}
+          activeOpacity={0.7}
           accessibilityLabel="Hatırlatmayı düzenle"
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>✏️</Text>
+          <Text className="text-lg">✏️</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, styles.deleteButton]}
+          className="w-12 h-12 rounded-[24px] justify-center items-center bg-danger-100 border border-danger-300"
           onPress={onDelete}
+          activeOpacity={0.7}
           accessibilityLabel="Hatırlatmayı sil"
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>🗑️</Text>
+          <Text className="text-lg">🗑️</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  content: {
-    flex: 1,
-  },
-  amount: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#4A90E2',
-    marginBottom: 8,
-  },
-  timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  timeLabel: {
-    fontSize: 14,
-    color: '#999',
-    marginRight: 6,
-  },
-  time: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#4A90E2',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  button: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editButton: {
-    backgroundColor: '#E8F4F8',
-  },
-  deleteButton: {
-    backgroundColor: '#FFE8E8',
-  },
-  buttonText: {
-    fontSize: 20,
-  },
-});
 
 export default WaterReminderItem;
 

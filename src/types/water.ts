@@ -8,6 +8,7 @@ export interface WaterReminder {
 export interface WaterContextType {
   reminders: WaterReminder[];
   addReminder: (reminder: Omit<WaterReminder, 'id' | 'notificationId'>) => Promise<void>;
+  addBulkReminders: (reminders: Omit<WaterReminder, 'id' | 'notificationId'>[]) => Promise<void>;
   updateReminder: (id: string, reminder: Partial<WaterReminder>) => Promise<void>;
   deleteReminder: (id: string) => Promise<void>;
   loadReminders: () => Promise<void>;

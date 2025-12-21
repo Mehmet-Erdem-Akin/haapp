@@ -3,61 +3,129 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   ScrollView,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { useDaily } from '../context/DailyContext';
 import { useMedications } from '../context/MedicationContext';
+import { useWater } from '../context/WaterContext';
+import { exportService } from '../services/exportService';
 
 const DailyScreen: React.FC = () => {
-  const { getTodayRecord, getTotalWaterToday } = useDaily();
+  const { getTodayRecord, getTotalWaterToday, records } = useDaily();
   const { medications } = useMedications();
+  const { reminders } = useWater();
   const todayRecord = getTodayRecord();
   const totalWater = getTotalWaterToday();
   const totalLiters = (totalWater / 1000).toFixed(2);
 
   const takenMedications = todayRecord.medications.filter((m) => m.taken);
   const notTakenMedications = todayRecord.medications.filter((m) => !m.taken);
+  const missedMedications = notTakenMedications.filter((m) => m.missed);
+  const pendingMedications = notTakenMedications.filter((m) => !m.missed);
+
+  const handleExport = async () => {
+    try {
+      await exportService.exportData(medications, reminders, records);
+      Alert.alert('Başarılı', 'Veriler başarıyla dışa aktarıldı!');
+    } catch (error) {
+      Alert.alert('Hata', 'Veriler dışa aktarılırken bir hata oluştu.');
+    }
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>📊 Günlük Takip</Text>
-        <Text style={styles.subtitle}>Bugünün Özeti</Text>
-      </View>
+    <LinearGradient
+      colors={['#E0E8FF', '#C0D1FF', '#A0B5FF']}
+      className="flex-1"
+      style={{ flex: 1 }}
+    >
+      <ScrollView className="flex-1" style={{ flex: 1 }}>
+        <View 
+          className="bg-white pt-5 pb-5 px-5 rounded-b-[20px] border border-gray-200 overflow-hidden flex-row justify-between items-center"
+          style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 5 }}
+        >
+          <View className="flex-1">
+            <Text className="text-[32px] font-bold text-primary mb-1">📊 Günlük Takip</Text>
+            <Text className="text-base text-gray-700">Bugünün Özeti</Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleExport}
+            className="bg-primary rounded-[16px] px-4 py-2"
+            activeOpacity={0.8}
+            accessibilityLabel="Verileri dışa aktar"
+            accessibilityRole="button"
+          >
+            <Text className="text-white font-semibold text-sm">📥 Export</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.statsContainer}>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{takenMedications.length}</Text>
-          <Text style={styles.statLabel}>İçilen İlaç</Text>
+        <View className="flex-row p-4 gap-3">
+          <View 
+            className="flex-1 rounded-[20px] p-4 items-center border border-gray-300 overflow-hidden"
+            style={{ 
+              backgroundColor: '#FFFFFF',
+              shadowColor: '#002BE0', 
+              shadowOffset: { width: 0, height: 2 }, 
+              shadowOpacity: 0.15, 
+              shadowRadius: 8, 
+              elevation: 3 
+            }}
+          >
+            <Text className="text-2xl font-bold text-primary mb-1">{takenMedications.length}</Text>
+            <Text className="text-xs text-gray-700 text-center">İçilen İlaç</Text>
+          </View>
+          <View 
+            className="flex-1 rounded-[20px] p-4 items-center border border-gray-300 overflow-hidden"
+            style={{ 
+              backgroundColor: '#FFFFFF',
+              shadowColor: '#002BE0', 
+              shadowOffset: { width: 0, height: 2 }, 
+              shadowOpacity: 0.15, 
+              shadowRadius: 8, 
+              elevation: 3 
+            }}
+          >
+            <Text className="text-2xl font-bold text-primary mb-1">{pendingMedications.length}</Text>
+            <Text className="text-xs text-gray-700 text-center">Bekleyen İlaç</Text>
+          </View>
+          <View 
+            className="flex-1 rounded-[20px] p-4 items-center border border-gray-300 overflow-hidden"
+            style={{ 
+              backgroundColor: '#FFFFFF',
+              shadowColor: '#002BE0', 
+              shadowOffset: { width: 0, height: 2 }, 
+              shadowOpacity: 0.15, 
+              shadowRadius: 8, 
+              elevation: 3 
+            }}
+          >
+            <Text className="text-2xl font-bold text-primary mb-1">{totalLiters}L</Text>
+            <Text className="text-xs text-gray-700 text-center">İçilen Su</Text>
+          </View>
         </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{notTakenMedications.length}</Text>
-          <Text style={styles.statLabel}>Bekleyen İlaç</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{totalLiters}L</Text>
-          <Text style={styles.statLabel}>İçilen Su</Text>
-        </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>✅ İçilen İlaçlar</Text>
+      <View className="p-4 pt-0">
+        <Text className="text-lg font-bold text-gray-900 mb-3">✅ İçilen İlaçlar</Text>
         {takenMedications.length === 0 ? (
-          <View style={styles.emptyBox}>
-            <Text style={styles.emptyText}>Henüz ilaç içilmedi</Text>
+          <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
+            <Text className="text-sm text-gray-700">Henüz ilaç içilmedi</Text>
           </View>
         ) : (
           <FlatList
             data={takenMedications}
             keyExtractor={(item) => item.medicationId}
             renderItem={({ item }) => (
-              <View style={styles.recordItem}>
-                <View style={styles.recordContent}>
-                  <Text style={styles.recordName}>{item.medicationName}</Text>
-                  <Text style={styles.recordTime}>⏰ {item.time}</Text>
+              <View className="bg-white rounded-[20px] p-4 mb-2 flex-row justify-between items-center border border-gray-300 overflow-hidden"
+                style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 }}
+              >
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
+                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
                   {item.takenAt && (
-                    <Text style={styles.recordTakenAt}>
+                    <Text className="text-xs text-primary mt-1">
                       İçildi: {new Date(item.takenAt).toLocaleTimeString('tr-TR', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -65,7 +133,9 @@ const DailyScreen: React.FC = () => {
                     </Text>
                   )}
                 </View>
-                <Text style={styles.checkmark}>✓</Text>
+                <View className="w-8 h-8 rounded-full bg-success-100 border border-success-400 justify-center items-center">
+                  <Text className="text-lg text-success-600 font-bold">✓</Text>
+                </View>
               </View>
             )}
             scrollEnabled={false}
@@ -73,23 +143,51 @@ const DailyScreen: React.FC = () => {
         )}
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>⏳ Bekleyen İlaçlar</Text>
-        {notTakenMedications.length === 0 ? (
-          <View style={styles.emptyBox}>
-            <Text style={styles.emptyText}>Tüm ilaçlar içildi! 🎉</Text>
+      {missedMedications.length > 0 && (
+        <View className="p-4 pt-0">
+          <Text className="text-lg font-bold text-gray-900 mb-3">❌ İçilmeyen İlaçlar</Text>
+          <FlatList
+            data={missedMedications}
+            keyExtractor={(item) => item.medicationId}
+            renderItem={({ item }) => (
+              <View className="bg-red-50 rounded-[20px] p-4 mb-2 flex-row justify-between items-center border-l-4 border-l-red-400 border border-red-200 overflow-hidden"
+                style={{ shadowColor: '#EF4444', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}
+              >
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
+                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                </View>
+                <View className="bg-red-100 border border-red-300 rounded-xl px-2 py-1">
+                  <Text className="text-xs text-red-700 font-semibold">İçilmedi</Text>
+                </View>
+              </View>
+            )}
+            scrollEnabled={false}
+          />
+        </View>
+      )}
+
+      <View className="p-4 pt-0">
+        <Text className="text-lg font-bold text-gray-900 mb-3">⏳ Bekleyen İlaçlar</Text>
+        {pendingMedications.length === 0 ? (
+          <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
+            <Text className="text-sm text-gray-700">Tüm ilaçlar içildi! 🎉</Text>
           </View>
         ) : (
           <FlatList
-            data={notTakenMedications}
+            data={pendingMedications}
             keyExtractor={(item) => item.medicationId}
             renderItem={({ item }) => (
-              <View style={[styles.recordItem, styles.pendingItem]}>
-                <View style={styles.recordContent}>
-                  <Text style={styles.recordName}>{item.medicationName}</Text>
-                  <Text style={styles.recordTime}>⏰ {item.time}</Text>
+              <View className="bg-yellow-50 rounded-[20px] p-4 mb-2 flex-row justify-between items-center border-l-4 border-l-yellow-400 border border-yellow-200 overflow-hidden"
+                style={{ shadowColor: '#F59E0B', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}
+              >
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
+                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
                 </View>
-                <Text style={styles.pendingBadge}>Bekliyor</Text>
+                <View className="bg-yellow-100 border border-yellow-300 rounded-xl px-2 py-1">
+                  <Text className="text-xs text-yellow-700 font-semibold">Bekliyor</Text>
+                </View>
               </View>
             )}
             scrollEnabled={false}
@@ -97,22 +195,24 @@ const DailyScreen: React.FC = () => {
         )}
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>💧 Su İçme Kayıtları</Text>
+      <View className="p-4 pt-0">
+        <Text className="text-lg font-bold text-gray-900 mb-3">💧 Su İçme Kayıtları</Text>
         {todayRecord.water.length === 0 ? (
-          <View style={styles.emptyBox}>
-            <Text style={styles.emptyText}>Henüz su içilmedi</Text>
+          <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
+            <Text className="text-sm text-gray-700">Henüz su içilmedi</Text>
           </View>
         ) : (
           <FlatList
             data={todayRecord.water}
             keyExtractor={(item, index) => `${item.time}-${index}`}
             renderItem={({ item }) => (
-              <View style={styles.recordItem}>
-                <View style={styles.recordContent}>
-                  <Text style={styles.recordName}>{item.amount}ml</Text>
-                  <Text style={styles.recordTime}>⏰ {item.time}</Text>
-                  <Text style={styles.recordTotal}>
+              <View className="bg-white rounded-[20px] p-4 mb-2 flex-row justify-between items-center border border-gray-300 overflow-hidden"
+                style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 }}
+              >
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900 mb-1">{item.amount}ml</Text>
+                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                  <Text className="text-xs text-primary mt-1 font-semibold">
                     Toplam: {(item.totalAmount / 1000).toFixed(2)}L
                   </Text>
                 </View>
@@ -122,144 +222,10 @@ const DailyScreen: React.FC = () => {
           />
         )}
       </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    backgroundColor: '#4A90E2',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#E8F4F8',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
-  },
-  statBox: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#4A90E2',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
-  },
-  section: {
-    padding: 16,
-    paddingTop: 0,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 12,
-  },
-  recordItem: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  pendingItem: {
-    borderLeftWidth: 4,
-    borderLeftColor: '#FFA500',
-  },
-  recordContent: {
-    flex: 1,
-  },
-  recordName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  recordTime: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 2,
-  },
-  recordTakenAt: {
-    fontSize: 12,
-    color: '#4A90E2',
-    marginTop: 4,
-  },
-  recordTotal: {
-    fontSize: 12,
-    color: '#4A90E2',
-    marginTop: 4,
-    fontWeight: '600',
-  },
-  checkmark: {
-    fontSize: 24,
-    color: '#4A90E2',
-    fontWeight: 'bold',
-  },
-  pendingBadge: {
-    fontSize: 12,
-    color: '#FFA500',
-    fontWeight: '600',
-    backgroundColor: '#FFF4E6',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  emptyBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 24,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 14,
-    color: '#999',
-  },
-});
 
 export default DailyScreen;
 

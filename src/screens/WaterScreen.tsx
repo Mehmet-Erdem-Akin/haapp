@@ -4,10 +4,11 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   Alert,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { useWater } from '../context/WaterContext';
 import { useDaily } from '../context/DailyContext';
 import { WaterReminder } from '../types/water';
@@ -86,51 +87,78 @@ const WaterScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>💧 Su İçme</Text>
-        <Text style={styles.subtitle}>Günlük Su Takibi</Text>
+    <LinearGradient
+      colors={['#E0E8FF', '#C0D1FF', '#A0B5FF']}
+      className="flex-1"
+      style={{ flex: 1 }}
+    >
+      <View 
+        className="bg-white pt-5 pb-5 px-5 rounded-b-[20px] border border-gray-200 overflow-hidden"
+        style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 5 }}
+      >
+        <Text className="text-[32px] font-bold text-primary mb-1">💧 Su İçme</Text>
+        <Text className="text-base text-gray-700">Günlük Su Takibi</Text>
       </View>
 
-      <View style={styles.statsContainer}>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{totalLiters}L</Text>
-          <Text style={styles.statLabel}>Bugün İçilen</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{reminders.length}</Text>
-          <Text style={styles.statLabel}>Hatırlatma</Text>
-        </View>
+      <View className="flex-row p-4 gap-3">
+        <BlurView 
+          intensity={15} 
+          className="flex-1 bg-white rounded-[20px] p-4 items-center border border-gray-300 overflow-hidden"
+          style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 }}
+        >
+          <Text className="text-[28px] font-bold text-primary mb-1">{totalLiters}L</Text>
+          <Text className="text-sm text-gray-700">Bugün İçilen</Text>
+        </BlurView>
+        <BlurView 
+          intensity={15} 
+          className="flex-1 bg-white rounded-[20px] p-4 items-center border border-gray-300 overflow-hidden"
+          style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 }}
+        >
+          <Text className="text-[28px] font-bold text-primary mb-1">{reminders.length}</Text>
+          <Text className="text-sm text-gray-700">Hatırlatma</Text>
+        </BlurView>
       </View>
 
-      <View style={styles.quickActions}>
-        <Text style={styles.quickActionsTitle}>Hızlı Ekle</Text>
-        <View style={styles.quickButtons}>
+      <View className="px-4 pb-4">
+        <Text className="text-base font-semibold text-gray-900 mb-3">Hızlı Ekle</Text>
+        <View className="flex-row gap-3">
           <TouchableOpacity
-            style={styles.quickButton}
             onPress={() => handleQuickDrink(250)}
+            className="flex-1 rounded-2xl overflow-hidden"
+            activeOpacity={0.8}
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 4 }}
           >
-            <Text style={styles.quickButtonText}>250ml</Text>
+            <View className="rounded-2xl py-3 items-center bg-primary">
+              <Text className="text-base font-semibold text-white">250ml</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.quickButton}
             onPress={() => handleQuickDrink(500)}
+            className="flex-1 rounded-2xl overflow-hidden"
+            activeOpacity={0.8}
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 4 }}
           >
-            <Text style={styles.quickButtonText}>500ml</Text>
+            <View className="rounded-2xl py-3 items-center bg-primary">
+              <Text className="text-base font-semibold text-white">500ml</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.quickButton}
             onPress={() => handleQuickDrink(750)}
+            className="flex-1 rounded-2xl overflow-hidden"
+            activeOpacity={0.8}
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 4 }}
           >
-            <Text style={styles.quickButtonText}>750ml</Text>
+            <View className="rounded-2xl py-3 items-center bg-primary">
+              <Text className="text-base font-semibold text-white">750ml</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
 
       {reminders.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Henüz hatırlatma eklenmemiş</Text>
-          <Text style={styles.emptySubtext}>
+        <View className="flex-1 justify-center items-center px-10">
+          <Text className="text-xl font-semibold text-primary mb-2 text-center">Henüz hatırlatma eklenmemiş</Text>
+          <Text className="text-sm text-gray-700 text-center">
             Sağ alttaki butona tıklayarak hatırlatma ekleyebilirsiniz
           </Text>
         </View>
@@ -145,147 +173,24 @@ const WaterScreen: React.FC = () => {
               onDelete={() => handleDeletePress(item)}
             />
           )}
-          contentContainerStyle={styles.listContainer}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ padding: 16 }}
         />
       )}
 
       <TouchableOpacity
-        style={styles.addButton}
+        className="absolute right-5 bottom-5 w-[64px] h-[64px] rounded-[32px] bg-primary justify-center items-center"
         onPress={handleAddPress}
         activeOpacity={0.8}
         accessibilityLabel="Yeni hatırlatma ekle"
         accessibilityRole="button"
+        style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 8 }}
       >
-        <Text style={styles.addButtonText}>+</Text>
+        <Text className="text-[36px] text-white font-light" style={{ textAlign: 'center', lineHeight: 36 }}>+</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    backgroundColor: '#4A90E2',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#E8F4F8',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
-  },
-  statBox: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  statValue: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#4A90E2',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#666',
-  },
-  quickActions: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-  quickActionsTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
-  },
-  quickButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  quickButton: {
-    flex: 1,
-    backgroundColor: '#4A90E2',
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
-  },
-  quickButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  listContainer: {
-    padding: 16,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 40,
-  },
-  emptyText: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#666',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#999',
-    textAlign: 'center',
-  },
-  addButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#4A90E2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  addButtonText: {
-    fontSize: 32,
-    color: '#FFFFFF',
-    fontWeight: '300',
-  },
-});
 
 export default WaterScreen;
 

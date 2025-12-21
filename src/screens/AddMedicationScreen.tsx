@@ -4,11 +4,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Alert,
   Platform,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useMedications } from '../context/MedicationContext';
 import { Medication } from '../types/medication';
@@ -90,55 +91,68 @@ const AddMedicationScreen: React.FC<AddMedicationScreenProps> = ({
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <View style={styles.header}>
-        <Text style={styles.title}>
-          {medication ? 'İlacı Düzenle' : 'Yeni İlaç Ekle'}
-        </Text>
-        <TouchableOpacity
-          onPress={onClose}
-          style={styles.closeButton}
-          accessibilityLabel="Kapat"
-          accessibilityRole="button"
-        >
-          <Text style={styles.closeButtonText}>✕</Text>
-        </TouchableOpacity>
-      </View>
+    <LinearGradient
+      colors={['#E0E8FF', '#C0D1FF', '#A0B5FF']}
+      className="flex-1"
+      style={{ flex: 1 }}
+    >
+      <ScrollView 
+        className="flex-1"
+        contentContainerStyle={{ padding: 20, flexGrow: 1 }}
+      >
+        <View className="flex-row justify-between items-center mb-6">
+          <Text className="text-2xl font-bold text-gray-800">
+            {medication ? 'İlacı Düzenle' : 'Yeni İlaç Ekle'}
+          </Text>
+          <TouchableOpacity
+            onPress={onClose}
+            className="w-10 h-10 rounded-[20px] justify-center items-center bg-gray-100 border border-gray-300"
+            activeOpacity={0.7}
+            accessibilityLabel="Kapat"
+            accessibilityRole="button"
+          >
+            <Text className="text-lg text-gray-600 font-semibold">✕</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.form}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>İlaç Adı *</Text>
+      <View style={{ gap: 20 }}>
+        <View className="mb-4">
+          <Text className="text-base font-semibold text-gray-700 mb-2">İlaç Adı *</Text>
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-[16px] p-4 text-base text-gray-800 border border-gray-300"
             value={name}
             onChangeText={setName}
             placeholder="Örn: Concor"
-            placeholderTextColor="#999"
+            placeholderTextColor="#9CA3AF"
             accessibilityLabel="İlaç adı"
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Dozaj *</Text>
+        <View className="mb-4">
+          <Text className="text-base font-semibold text-gray-700 mb-2">Dozaj *</Text>
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-[16px] p-4 text-base text-gray-800 border border-gray-300"
             value={dosage}
             onChangeText={setDosage}
             placeholder="Örn: 5mg"
-            placeholderTextColor="#999"
+            placeholderTextColor="#9CA3AF"
             accessibilityLabel="Dozaj"
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Hatırlatma Saati *</Text>
+        <View className="mb-4">
+          <Text className="text-base font-semibold text-gray-700 mb-2">Hatırlatma Saati *</Text>
           <TouchableOpacity
-            style={styles.timeButton}
+            className="bg-white rounded-[16px] p-4 border border-gray-300"
             onPress={() => setShowTimePicker(true)}
+            activeOpacity={0.7}
             accessibilityLabel="Saat seç"
             accessibilityRole="button"
+            style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}
           >
-            <Text style={styles.timeButtonText}>{formatTime(time)}</Text>
+            <Text className="text-lg font-semibold text-primary">{formatTime(time)}</Text>
           </TouchableOpacity>
 
           {showTimePicker && (
@@ -153,100 +167,20 @@ const AddMedicationScreen: React.FC<AddMedicationScreenProps> = ({
         </View>
 
         <TouchableOpacity
-          style={styles.saveButton}
+          className="rounded-[20px] mt-2 bg-primary py-4 items-center"
           onPress={handleSave}
+          activeOpacity={0.8}
           accessibilityLabel="Kaydet"
           accessibilityRole="button"
+          style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.3, shadowRadius: 12, elevation: 5 }}
         >
-          <Text style={styles.saveButtonText}>Kaydet</Text>
+          <Text className="text-lg font-bold text-white">Kaydet</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  contentContainer: {
-    padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  closeButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#E8E8E8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    fontSize: 20,
-    color: '#666',
-  },
-  form: {
-    gap: 20,
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: '#333',
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-  },
-  timeButton: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-  },
-  timeButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#4A90E2',
-  },
-  saveButton: {
-    backgroundColor: '#4A90E2',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  saveButtonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-});
 
 export default AddMedicationScreen;
 

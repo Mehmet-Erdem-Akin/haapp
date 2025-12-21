@@ -6,6 +6,7 @@ export interface DailyRecord {
     time: string; // Format: "HH:mm"
     taken: boolean;
     takenAt?: string; // ISO timestamp
+    missed?: boolean; // 30 dk geçmişse ve işaretlenmemişse true
   }[];
   water: {
     time: string; // Format: "HH:mm"

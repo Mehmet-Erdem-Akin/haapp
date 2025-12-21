@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Medication } from '../types/medication';
 
 interface MedicationItemProps {
@@ -18,142 +18,69 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
   onTaken,
 }) => {
   return (
-    <View style={[styles.container, isTaken && styles.takenContainer]}>
-      <View style={styles.content}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name}>{medication.name}</Text>
-          {isTaken && <Text style={styles.takenBadge}>✓ İçildi</Text>}
+    <View 
+      className={`rounded-[20px] p-4 mb-3 flex-row justify-between items-center border overflow-hidden ${
+        isTaken ? 'border-l-4 border-l-success border-success-200' : 'border-gray-300'
+      }`}
+      style={{ 
+        backgroundColor: '#FFFFFF',
+        shadowColor: '#002BE0', 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.15, 
+        shadowRadius: 8, 
+        elevation: 3 
+      }}
+    >
+      <View className="flex-1">
+        <View className="flex-row items-center justify-between mb-1">
+          <Text className="text-xl font-bold text-gray-900 mb-1">{medication.name}</Text>
+          {isTaken && (
+            <View className="bg-success-100 border border-success-400 rounded-xl px-2 py-1">
+              <Text className="text-xs font-semibold text-success-600">✓ İçildi</Text>
+            </View>
+          )}
         </View>
-        <Text style={styles.dosage}>{medication.dosage}</Text>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeLabel}>⏰ Saat:</Text>
-          <Text style={styles.time}>{medication.time}</Text>
+        <Text className="text-base text-gray-700 mb-2">{medication.dosage}</Text>
+        <View className="flex-row items-center">
+          <Text className="text-sm text-gray-600 mr-1.5">⏰ Saat:</Text>
+          <Text className="text-base font-semibold text-primary">{medication.time}</Text>
         </View>
       </View>
-      <View style={styles.actions}>
+      <View className="flex-row gap-2">
         {!isTaken && onTaken && (
           <TouchableOpacity
-            style={[styles.button, styles.takenButton]}
+            className="w-12 h-12 rounded-[24px] justify-center items-center bg-success overflow-hidden"
             onPress={onTaken}
+            activeOpacity={0.8}
             accessibilityLabel="İçildi olarak işaretle"
             accessibilityRole="button"
+            style={{ shadowColor: '#44BEA4', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 3 }}
           >
-            <Text style={styles.takenButtonText}>✓</Text>
+            <Text className="text-lg text-white font-bold">✓</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
-          style={[styles.button, styles.editButton]}
+          className="w-12 h-12 rounded-[24px] justify-center items-center bg-accent-100 border border-accent-200"
           onPress={onEdit}
+          activeOpacity={0.7}
           accessibilityLabel="İlacı düzenle"
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>✏️</Text>
+          <Text className="text-lg">✏️</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, styles.deleteButton]}
+          className="w-12 h-12 rounded-[24px] justify-center items-center bg-danger-100 border border-danger-300"
           onPress={onDelete}
+          activeOpacity={0.7}
           accessibilityLabel="İlacı sil"
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>🗑️</Text>
+          <Text className="text-lg">🗑️</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  takenContainer: {
-    backgroundColor: '#F0F9FF',
-    borderLeftWidth: 4,
-    borderLeftColor: '#4A90E2',
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  takenBadge: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#4A90E2',
-    backgroundColor: '#E8F4F8',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  content: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  dosage: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 8,
-  },
-  timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  timeLabel: {
-    fontSize: 14,
-    color: '#999',
-    marginRight: 6,
-  },
-  time: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#4A90E2',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  button: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editButton: {
-    backgroundColor: '#E8F4F8',
-  },
-  deleteButton: {
-    backgroundColor: '#FFE8E8',
-  },
-  takenButton: {
-    backgroundColor: '#4A90E2',
-  },
-  takenButtonText: {
-    fontSize: 18,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  buttonText: {
-    fontSize: 20,
-  },
-});
 
 export default MedicationItem;
 
