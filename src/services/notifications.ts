@@ -41,7 +41,7 @@ export const notificationService = {
 
         const notificationId = await Notifications.scheduleNotificationAsync({
             content: {
-                title: '💊 İlaç Hatırlatması',
+                title: 'İlaç Hatırlatması',
                 body: `${medication.name} (${medication.dosage}) almanın zamanı!`,
                 sound: true,
                 priority: Notifications.AndroidNotificationPriority.HIGH,

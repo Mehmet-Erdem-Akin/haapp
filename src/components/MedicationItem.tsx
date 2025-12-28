@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Medication } from '../types/medication';
+import { ActionIcons } from '../utils/icons';
 
 interface MedicationItemProps {
   medication: Medication;
@@ -35,14 +36,16 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
         <View className="flex-row items-center justify-between mb-1">
           <Text className="text-xl font-bold text-gray-900 mb-1">{medication.name}</Text>
           {isTaken && (
-            <View className="bg-success-100 border border-success-400 rounded-xl px-2 py-1">
-              <Text className="text-xs font-semibold text-success-600">✓ İçildi</Text>
+            <View className="bg-success-100 border border-success-400 rounded-xl px-2 py-1 flex-row items-center">
+              <ActionIcons.CheckCircle size={14} color="#10B981" />
+              <Text className="text-xs font-semibold text-success-600 ml-1">İçildi</Text>
             </View>
           )}
         </View>
         <Text className="text-base text-gray-700 mb-2">{medication.dosage}</Text>
         <View className="flex-row items-center">
-          <Text className="text-sm text-gray-600 mr-1.5">⏰ Saat:</Text>
+          <ActionIcons.Time size={16} color="#6B7280" />
+          <Text className="text-sm text-gray-600 ml-1.5 mr-1.5">Saat:</Text>
           <Text className="text-base font-semibold text-primary">{medication.time}</Text>
         </View>
       </View>
@@ -56,7 +59,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
             accessibilityRole="button"
             style={{ shadowColor: '#44BEA4', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 3 }}
           >
-            <Text className="text-lg text-white font-bold">✓</Text>
+            <ActionIcons.Check size={20} color="#FFFFFF" />
           </TouchableOpacity>
         )}
         <TouchableOpacity
@@ -66,7 +69,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
           accessibilityLabel="İlacı düzenle"
           accessibilityRole="button"
         >
-          <Text className="text-lg">✏️</Text>
+          <ActionIcons.Edit size={20} color="#6B7280" />
         </TouchableOpacity>
         <TouchableOpacity
           className="w-12 h-12 rounded-[24px] justify-center items-center bg-danger-100 border border-danger-300"
@@ -75,7 +78,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
           accessibilityLabel="İlacı sil"
           accessibilityRole="button"
         >
-          <Text className="text-lg">🗑️</Text>
+          <ActionIcons.Delete size={20} color="#EF4444" />
         </TouchableOpacity>
       </View>
     </View>

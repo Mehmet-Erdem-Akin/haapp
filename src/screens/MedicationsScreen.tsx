@@ -13,6 +13,7 @@ import { useDaily } from '../context/DailyContext';
 import { Medication } from '../types/medication';
 import AddMedicationScreen from './AddMedicationScreen';
 import MedicationItem from '../components/MedicationItem';
+import { ActionIcons, TabIcons } from '../utils/icons';
 
 const MedicationsScreen: React.FC = () => {
     const { medications, deleteMedication } = useMedications();
@@ -80,7 +81,10 @@ const MedicationsScreen: React.FC = () => {
                 className="bg-white pt-5 pb-5 px-5 rounded-b-[20px] border border-gray-200 overflow-hidden"
                 style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 5 }}
             >
-                <Text className="text-[32px] font-bold text-primary mb-1">💊 İlaçlar</Text>
+                <View className="flex-row items-center mb-1">
+                    <TabIcons.Medication size={32} color="#002BE0" />
+                    <Text className="text-[32px] font-bold text-primary ml-2">İlaçlar</Text>
+                </View>
                 <Text className="text-base text-gray-700">İlaç Hatırlatmaları</Text>
             </View>
 
@@ -123,7 +127,7 @@ const MedicationsScreen: React.FC = () => {
                 accessibilityRole="button"
                 style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 8 }}
             >
-                <Text className="text-[36px] text-white font-light" style={{ textAlign: 'center', lineHeight: 36 }}>+</Text>
+                <ActionIcons.Add size={32} color="#FFFFFF" />
             </TouchableOpacity>
         </LinearGradient>
     );

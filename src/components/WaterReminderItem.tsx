@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { WaterReminder } from '../types/water';
+import { ActionIcons } from '../utils/icons';
 
 interface WaterReminderItemProps {
   reminder: WaterReminder;
@@ -28,7 +29,8 @@ const WaterReminderItem: React.FC<WaterReminderItemProps> = ({
       <View className="flex-1">
         <Text className="text-xl font-bold text-primary mb-2">{reminder.amount}ml</Text>
         <View className="flex-row items-center">
-          <Text className="text-sm text-gray-600 mr-1.5">⏰ Saat:</Text>
+          <ActionIcons.Time size={16} color="#6B7280" />
+          <Text className="text-sm text-gray-600 ml-1.5 mr-1.5">Saat:</Text>
           <Text className="text-base font-semibold text-primary">{reminder.time}</Text>
         </View>
       </View>
@@ -40,7 +42,7 @@ const WaterReminderItem: React.FC<WaterReminderItemProps> = ({
           accessibilityLabel="Hatırlatmayı düzenle"
           accessibilityRole="button"
         >
-          <Text className="text-lg">✏️</Text>
+          <ActionIcons.Edit size={20} color="#6B7280" />
         </TouchableOpacity>
         <TouchableOpacity
           className="w-12 h-12 rounded-[24px] justify-center items-center bg-danger-100 border border-danger-300"
@@ -49,7 +51,7 @@ const WaterReminderItem: React.FC<WaterReminderItemProps> = ({
           accessibilityLabel="Hatırlatmayı sil"
           accessibilityRole="button"
         >
-          <Text className="text-lg">🗑️</Text>
+          <ActionIcons.Delete size={20} color="#EF4444" />
         </TouchableOpacity>
       </View>
     </View>

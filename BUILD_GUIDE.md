@@ -214,3 +214,4 @@ npm start
 
 **Sorularınız için:** [Expo Community](https://forums.expo.dev/) veya [Discord](https://chat.expo.dev/)
 
+

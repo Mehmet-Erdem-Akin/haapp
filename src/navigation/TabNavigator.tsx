@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import MedicationsScreen from '../screens/MedicationsScreen';
 import WaterScreen from '../screens/WaterScreen';
 import DailyScreen from '../screens/DailyScreen';
+import { TabIcons } from '../utils/icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ const TabNavigator: React.FC = () => {
                 options={{
                     tabBarLabel: 'İlaçlar',
                     tabBarIcon: ({ color }) => (
-                        <Text style={{ fontSize: 24 }}>💊</Text>
+                        <TabIcons.Medication size={24} color={color} />
                     ),
                 }}
             />
@@ -46,7 +47,7 @@ const TabNavigator: React.FC = () => {
                 options={{
                     tabBarLabel: 'Su',
                     tabBarIcon: ({ color }) => (
-                        <Text style={{ fontSize: 24 }}>💧</Text>
+                        <TabIcons.Water size={24} color={color} />
                     ),
                 }}
             />
@@ -56,7 +57,7 @@ const TabNavigator: React.FC = () => {
                 options={{
                     tabBarLabel: 'Günlük',
                     tabBarIcon: ({ color }) => (
-                        <Text style={{ fontSize: 24 }}>📊</Text>
+                        <TabIcons.Daily size={24} color={color} />
                     ),
                 }}
             />

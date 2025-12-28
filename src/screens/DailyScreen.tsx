@@ -13,6 +13,7 @@ import { useDaily } from '../context/DailyContext';
 import { useMedications } from '../context/MedicationContext';
 import { useWater } from '../context/WaterContext';
 import { exportService } from '../services/exportService';
+import { ActionIcons, StatusIcons, TabIcons, WaterIcons } from '../utils/icons';
 
 const DailyScreen: React.FC = () => {
   const { getTodayRecord, getTotalWaterToday, records } = useDaily();
@@ -48,17 +49,21 @@ const DailyScreen: React.FC = () => {
           style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 5 }}
         >
           <View className="flex-1">
-            <Text className="text-[32px] font-bold text-primary mb-1">📊 Günlük Takip</Text>
+            <View className="flex-row items-center mb-1">
+              <TabIcons.Daily size={32} color="#002BE0" />
+              <Text className="text-[32px] font-bold text-primary ml-2">Günlük Takip</Text>
+            </View>
             <Text className="text-base text-gray-700">Bugünün Özeti</Text>
           </View>
           <TouchableOpacity
             onPress={handleExport}
-            className="bg-primary rounded-[16px] px-4 py-2"
+            className="bg-primary rounded-[16px] px-4 py-2 flex-row items-center"
             activeOpacity={0.8}
             accessibilityLabel="Verileri dışa aktar"
             accessibilityRole="button"
           >
-            <Text className="text-white font-semibold text-sm">📥 Export</Text>
+            <ActionIcons.Download size={16} color="#FFFFFF" />
+            <Text className="text-white font-semibold text-sm ml-1.5">Export</Text>
           </TouchableOpacity>
         </View>
 
@@ -108,7 +113,10 @@ const DailyScreen: React.FC = () => {
         </View>
 
       <View className="p-4 pt-0">
-        <Text className="text-lg font-bold text-gray-900 mb-3">✅ İçilen İlaçlar</Text>
+        <View className="flex-row items-center mb-3">
+          <StatusIcons.Success size={20} color="#10B981" />
+          <Text className="text-lg font-bold text-gray-900 ml-2">İçilen İlaçlar</Text>
+        </View>
         {takenMedications.length === 0 ? (
           <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
             <Text className="text-sm text-gray-700">Henüz ilaç içilmedi</Text>
@@ -123,7 +131,10 @@ const DailyScreen: React.FC = () => {
               >
                 <View className="flex-1">
                   <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
-                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                  <View className="flex-row items-center mb-0.5">
+                    <ActionIcons.Time size={14} color="#6B7280" />
+                    <Text className="text-sm text-gray-700 ml-1">{item.time}</Text>
+                  </View>
                   {item.takenAt && (
                     <Text className="text-xs text-primary mt-1">
                       İçildi: {new Date(item.takenAt).toLocaleTimeString('tr-TR', {
@@ -134,7 +145,7 @@ const DailyScreen: React.FC = () => {
                   )}
                 </View>
                 <View className="w-8 h-8 rounded-full bg-success-100 border border-success-400 justify-center items-center">
-                  <Text className="text-lg text-success-600 font-bold">✓</Text>
+                  <ActionIcons.CheckCircle size={20} color="#10B981" />
                 </View>
               </View>
             )}
@@ -145,7 +156,10 @@ const DailyScreen: React.FC = () => {
 
       {missedMedications.length > 0 && (
         <View className="p-4 pt-0">
-          <Text className="text-lg font-bold text-gray-900 mb-3">❌ İçilmeyen İlaçlar</Text>
+          <View className="flex-row items-center mb-3">
+            <StatusIcons.Error size={20} color="#EF4444" />
+            <Text className="text-lg font-bold text-gray-900 ml-2">İçilmeyen İlaçlar</Text>
+          </View>
           <FlatList
             data={missedMedications}
             keyExtractor={(item) => item.medicationId}
@@ -155,7 +169,10 @@ const DailyScreen: React.FC = () => {
               >
                 <View className="flex-1">
                   <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
-                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                  <View className="flex-row items-center mb-0.5">
+                    <ActionIcons.Time size={14} color="#6B7280" />
+                    <Text className="text-sm text-gray-700 ml-1">{item.time}</Text>
+                  </View>
                 </View>
                 <View className="bg-red-100 border border-red-300 rounded-xl px-2 py-1">
                   <Text className="text-xs text-red-700 font-semibold">İçilmedi</Text>
@@ -168,10 +185,13 @@ const DailyScreen: React.FC = () => {
       )}
 
       <View className="p-4 pt-0">
-        <Text className="text-lg font-bold text-gray-900 mb-3">⏳ Bekleyen İlaçlar</Text>
+        <View className="flex-row items-center mb-3">
+          <ActionIcons.Hourglass size={20} color="#F59E0B" />
+          <Text className="text-lg font-bold text-gray-900 ml-2">Bekleyen İlaçlar</Text>
+        </View>
         {pendingMedications.length === 0 ? (
           <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
-            <Text className="text-sm text-gray-700">Tüm ilaçlar içildi! 🎉</Text>
+            <Text className="text-sm text-gray-700">Tüm ilaçlar içildi!</Text>
           </View>
         ) : (
           <FlatList
@@ -183,7 +203,10 @@ const DailyScreen: React.FC = () => {
               >
                 <View className="flex-1">
                   <Text className="text-lg font-semibold text-gray-900 mb-1">{item.medicationName}</Text>
-                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                  <View className="flex-row items-center mb-0.5">
+                    <ActionIcons.Time size={14} color="#6B7280" />
+                    <Text className="text-sm text-gray-700 ml-1">{item.time}</Text>
+                  </View>
                 </View>
                 <View className="bg-yellow-100 border border-yellow-300 rounded-xl px-2 py-1">
                   <Text className="text-xs text-yellow-700 font-semibold">Bekliyor</Text>
@@ -196,7 +219,10 @@ const DailyScreen: React.FC = () => {
       </View>
 
       <View className="p-4 pt-0">
-        <Text className="text-lg font-bold text-gray-900 mb-3">💧 Su İçme Kayıtları</Text>
+        <View className="flex-row items-center mb-3">
+          <WaterIcons.Drop size={20} color="#002BE0" />
+          <Text className="text-lg font-bold text-gray-900 ml-2">Su İçme Kayıtları</Text>
+        </View>
         {todayRecord.water.length === 0 ? (
           <View className="bg-white rounded-[20px] p-6 items-center border border-gray-300">
             <Text className="text-sm text-gray-700">Henüz su içilmedi</Text>
@@ -211,7 +237,10 @@ const DailyScreen: React.FC = () => {
               >
                 <View className="flex-1">
                   <Text className="text-lg font-semibold text-gray-900 mb-1">{item.amount}ml</Text>
-                  <Text className="text-sm text-gray-700 mb-0.5">⏰ {item.time}</Text>
+                  <View className="flex-row items-center mb-0.5">
+                    <ActionIcons.Time size={14} color="#6B7280" />
+                    <Text className="text-sm text-gray-700 ml-1">{item.time}</Text>
+                  </View>
                   <Text className="text-xs text-primary mt-1 font-semibold">
                     Toplam: {(item.totalAmount / 1000).toFixed(2)}L
                   </Text>

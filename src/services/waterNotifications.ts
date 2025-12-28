@@ -24,7 +24,7 @@ export const waterNotificationService = {
 
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
-        title: '💧 Su İçme Zamanı',
+        title: 'Su İçme Zamanı',
         body: `${reminder.amount}ml su içmeyi unutmayın!`,
         sound: true,
         priority: Notifications.AndroidNotificationPriority.HIGH,
@@ -57,4 +57,5 @@ export const waterNotificationService = {
     }
   },
 };
+
 
