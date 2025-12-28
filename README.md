@@ -1,257 +1,236 @@
-# 💊 haapp - İlaç ve Su Hatırlatma Uygulaması
+# haapp - Sağlık Takip Uygulaması
 
-React Native ile geliştirilmiş, yaşlılar ve düzenli ilaç kullananlar için tasarlanmış ilaç ve su içme hatırlatma uygulaması.
+Modern ve kullanıcı dostu bir React Native sağlık takip uygulaması. İlaç hatırlatmaları, su takibi, günlük rutinler ve döngü takibi gibi birçok özelliği bir araya getiren kapsamlı bir super app.
 
-## ✨ Özellikler
+## 📸 Ekran Görüntüleri
 
-### 💊 İlaç Yönetimi
-- ✅ İlaç ekleme, düzenleme ve silme
-- ✅ Günlük tekrarlanan bildirimler
-- ✅ İlaç içildi onayı ("İçtim" butonu)
-- ✅ Günlük ilaç takibi
+### Ana Ekranlar
 
-### 💧 Su İçme Hatırlatıcısı
-- ✅ Su içme hatırlatmaları ekleme/düzenleme/silme
-- ✅ Günlük su miktarı takibi (litre cinsinden)
-- ✅ Hızlı ekleme butonları (250ml, 500ml, 750ml)
-- ✅ Bildirim desteği
+<div align="center">
 
-### 📊 Günlük Takip
-- ✅ İçilen ilaçlar listesi
-- ✅ Bekleyen ilaçlar listesi
-- ✅ Su içme kayıtları (saat ve miktar)
-- ✅ Günlük toplam su miktarı
-- ✅ İstatistikler ve özet bilgiler
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-01.jpeg" alt="İlaçlar Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-02.jpeg" alt="Su Takibi Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-03.jpeg" alt="Günlük Takip Ekranı" width="250" />
 
-### 🔔 Bildirimler
-- ✅ Sesli bildirim desteği
-- ✅ Yerel bildirimler (internet gerektirmez)
-- ✅ Bildirimden "içtim" onayı
-- ✅ iOS ve Android desteği
+</div>
 
-### 📱 Kullanıcı Arayüzü
-- ✅ Modern tab navigasyon (İlaçlar, Su, Günlük)
-- ✅ Kullanıcı dostu arayüz
-- ✅ Erişilebilirlik özellikleri
-- ✅ Yerel veri saklama (internet gerektirmez)
+### Yeni Modüller
 
-## 🚀 Kurulum
+<div align="center">
 
-### Gereksinimler
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-04.jpeg" alt="Rutinler Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-05.jpeg" alt="Döngü Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-06.jpeg" alt="Rutin Ekleme Ekranı" width="250" />
 
-- Node.js (v20 veya üzeri)
-- npm veya yarn
-- Expo CLI
-- iOS Simulator (Mac için) veya Android Emulator
+</div>
 
-### Adımlar
+### Detay Ekranları
 
-1. Bağımlılıkları yükleyin:
+<div align="center">
+
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-07.jpeg" alt="İlaç Detayları" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-08.jpeg" alt="Su İstatistikleri" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-09.jpeg" alt="Döngü Ayarları" width="250" />
+
+</div>
+
+<div align="center">
+
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-10.jpeg" alt="Aylık Hedefler" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-11.jpeg" alt="Rutin Detayları" width="250" />
+
+</div>
+
+## 🚀 Özellikler
+
+### 💊 İlaç Takibi
+- Günlük, haftalık, özel günlerde veya belirli aralıklarla ilaç hatırlatmaları
+- Sabah/akşam gibi çoklu saat desteği
+- Bitiş tarihi belirleme
+- Günlük ilerleme takibi ve haftalık grafikler
+- Push notification desteği
+- İlaç alma durumu takibi (alındı, bekliyor, kaçırıldı)
+
+### 💧 Su Takibi
+- Özelleştirilebilir günlük su hedefi
+- Çoklu su içme hatırlatmaları
+- Günlük su tüketim takibi
+- Haftalık istatistikler ve grafikler
+- Push notification desteği
+- Hızlı su ekleme butonları
+
+### ✅ Günlük Rutinler
+- Dinamik görev listesi oluşturma
+- Alt görev (sub-task) desteği
+- Tekrarlama seçenekleri:
+  - Her gün
+  - Hafta içi
+  - Hafta sonu
+  - Haftalık
+  - Özel günler
+- Rutin tamamlama takibi
+- Günlük ilerleme yüzdesi
+- Alt görevleri tek tek işaretleme
+
+### 📅 Döngü & Aylık Hedefler
+- **Genel Aylık Hedefler**: Ay sonuna kadar tamamlanacak hedefler belirleme
+- **Regl Döngüsü Takibi** (Opsiyonel):
+  - Son adet tarihi kaydı
+  - Döngü uzunluğu ve adet süresi takibi
+  - Sonraki adet tarihi tahmini
+  - Belirti kayıtları (ruh hali, ağrı seviyesi, fiziksel belirtiler)
+
+### 📊 Günlük Özet
+- Günlük ilaç durumu (alındı, bekliyor, kaçırıldı)
+- Günlük su tüketimi
+- Tüm aktivitelerin tek ekranda görüntülenmesi
+- Veri dışa aktarma özelliği
+
+## 🛠 Teknolojiler
+
+- **React Native** - Cross-platform mobil uygulama geliştirme
+- **Expo** - Geliştirme ve build araçları
+- **TypeScript** - Tip güvenliği
+- **NativeWind** - Tailwind CSS benzeri styling
+- **AsyncStorage** - Yerel veri saklama
+- **Expo Notifications** - Push notification desteği
+- **React Navigation** - Navigasyon yönetimi
+- **Context API** - Global state yönetimi
+
+## 📦 Kurulum
+
 ```bash
+# Bağımlılıkları yükle
 npm install
-```
 
-2. Uygulamayı başlatın:
-```bash
+# iOS için pods yükle (sadece macOS)
+cd ios && pod install && cd ..
+
+# Geliştirme sunucusunu başlat
 npm start
-```
 
-3. iOS için:
-```bash
+# iOS simülatörde çalıştır
 npm run ios
-```
 
-4. Android için:
-```bash
+# Android emülatörde çalıştır
 npm run android
 ```
 
-## 📱 Kullanım
+## 📱 Build
 
-### İlaçlar Sekmesi
-- **İlaç Ekleme:** Sağ alttaki "+" butonuna tıklayarak yeni ilaç ekleyin
-- **İlaç Düzenleme:** İlaç kartındaki ✏️ butonuna tıklayın
-- **İlaç Silme:** İlaç kartındaki 🗑️ butonuna tıklayın
-- **İçtim Onayı:** İlaç kartındaki ✓ butonuna tıklayarak ilacı içildi olarak işaretleyin
-
-### Su Sekmesi
-- **Hatırlatma Ekleme:** Sağ alttaki "+" butonuna tıklayarak su içme hatırlatması ekleyin
-- **Hızlı Ekleme:** 250ml, 500ml veya 750ml butonlarına tıklayarak hızlıca su içme kaydı oluşturun
-- **Günlük Toplam:** Ekranın üst kısmında bugün içilen toplam su miktarını görün
-
-### Günlük Takip Sekmesi
-- **İstatistikler:** Bugün içilen ilaç sayısı, bekleyen ilaç sayısı ve toplam su miktarı
-- **İçilen İlaçlar:** Bugün içilen tüm ilaçların listesi ve içilme saatleri
-- **Bekleyen İlaçlar:** Henüz içilmemiş ilaçların listesi
-- **Su Kayıtları:** Bugün içilen su miktarları ve saatleri
-
-## 🛠️ Teknik Detaylar
-
-### Kullanılan Teknolojiler
-
-- **React Native** - Cross-platform mobil uygulama framework
-- **Expo** - React Native geliştirme platformu
-- **React Navigation** - Tab navigasyon için
-- **expo-notifications** - Yerel bildirim yönetimi
-- **@react-native-async-storage/async-storage** - Yerel veri saklama
-- **@react-native-community/datetimepicker** - Zaman seçici
-- **TypeScript** - Tip güvenliği
-
-### Veri Yapısı
-
-#### İlaç (Medication)
-```json
-{
-  "id": "string",
-  "name": "string",
-  "dosage": "string",
-  "time": "HH:mm",
-  "days": "everyday",
-  "notificationId": "string"
-}
-```
-
-#### Su Hatırlatması (WaterReminder)
-```json
-{
-  "id": "string",
-  "time": "HH:mm",
-  "amount": 250,
-  "notificationId": "string"
-}
-```
-
-#### Günlük Kayıt (DailyRecord)
-```json
-{
-  "date": "YYYY-MM-DD",
-  "medications": [
-    {
-      "medicationId": "string",
-      "medicationName": "string",
-      "time": "HH:mm",
-      "taken": true,
-      "takenAt": "ISO timestamp"
-    }
-  ],
-  "water": [
-    {
-      "time": "HH:mm",
-      "amount": 250,
-      "totalAmount": 500
-    }
-  ]
-}
-```
-
-### Bildirim Sistemi
-
-- Uygulama her ilaç ve su hatırlatması için günlük tekrarlanan bildirimler oluşturur
-- Bildirimler cihazın yerel bildirim sistemi üzerinden çalışır
-- İnternet bağlantısı gerektirmez
-- iOS ve Android için optimize edilmiştir
-
-### Proje Yapısı
-
-```
-haapp/
-├── src/
-│   ├── components/          # UI bileşenleri
-│   │   ├── MedicationItem.tsx
-│   │   ├── WaterReminderItem.tsx
-│   │   └── AppProviders.tsx
-│   ├── context/             # Context API state yönetimi
-│   │   ├── MedicationContext.tsx
-│   │   ├── WaterContext.tsx
-│   │   └── DailyContext.tsx
-│   ├── navigation/           # Navigasyon yapısı
-│   │   └── TabNavigator.tsx
-│   ├── screens/              # Ekranlar
-│   │   ├── MedicationsScreen.tsx
-│   │   ├── WaterScreen.tsx
-│   │   ├── DailyScreen.tsx
-│   │   ├── AddMedicationScreen.tsx
-│   │   └── AddWaterReminderScreen.tsx
-│   ├── services/             # Servisler
-│   │   ├── storage.ts
-│   │   ├── notifications.ts
-│   │   ├── waterStorage.ts
-│   │   ├── waterNotifications.ts
-│   │   └── dailyStorage.ts
-│   └── types/                # TypeScript tipleri
-│       ├── medication.ts
-│       ├── water.ts
-│       └── daily.ts
-├── App.tsx                   # Ana uygulama bileşeni
-├── app.json                  # Expo yapılandırması
-└── package.json              # Bağımlılıklar
-```
-
-## 📦 Build ve Dağıtım
-
-Detaylı build rehberi için `BUILD_GUIDE.md` dosyasına bakın.
-
-### Hızlı Build
-
-**Android APK:**
+### Android
 ```bash
+# Preview build
 npm run build:android
+
+# Production build
+npm run build:android:prod
 ```
 
-**iOS:**
+### iOS
 ```bash
+# Preview build
 npm run build:ios
+
+# Production build
+npm run build:ios:prod
 ```
 
-## ⚠️ Önemli Notlar
+## 📂 Proje Yapısı
 
-### iOS İzinleri
-- İlk açılışta bildirim izni istenir. İzin verilmezse bildirimler çalışmaz.
-
-### Android Doze Mode
-- Android cihazlarda pil tasarrufu modu bildirimleri geciktirebilir. Uygulama "Exact Alarm" izinlerini kullanır.
-
-### Veri Kaybı
-- Veriler sadece cihazda saklanır. Uygulama silinirse veriler kaybolur.
-- Cloud senkronizasyonu yoktur (gelecekte eklenebilir).
-
-### Bildirimler
-- Bildirimler yerel olarak çalışır, internet gerektirmez
-- Cihaz kapalıyken veya uygulama arka plandayken de çalışır
-- Bildirim sesi cihazın varsayılan bildirim sesidir
-
-## 🔧 Geliştirme
-
-### Scripts
-
-- `npm start` - Expo geliştirme sunucusunu başlatır
-- `npm run android` - Android emülatörde çalıştırır
-- `npm run ios` - iOS simülatörde çalıştırır
-- `npm run web` - Web tarayıcıda çalıştırır
-
-### Cache Temizleme
-
-```bash
-rm -rf node_modules/.cache .expo .metro
-npx expo start --clear
+```
+src/
+├── components/        # Reusable componentler
+│   ├── v2/           # V2 componentleri (CircularProgress, Charts, etc.)
+│   └── ...
+├── context/          # Context API providers
+│   ├── MedicationContext.tsx
+│   ├── WaterContext.tsx
+│   ├── DailyContext.tsx
+│   ├── RoutineContext.tsx
+│   └── CycleContext.tsx
+├── navigation/       # Navigation yapılandırması
+│   └── TabNavigator.tsx
+├── screens/          # Ekranlar
+│   ├── MedicationsScreen.tsx
+│   ├── WaterScreen.tsx
+│   ├── DailyScreen.tsx
+│   ├── RoutinesScreen.tsx
+│   ├── CycleScreen.tsx
+│   └── ...
+├── services/         # Business logic ve storage
+│   ├── storage.ts
+│   ├── waterStorage.ts
+│   ├── routineStorage.ts
+│   ├── cycleStorage.ts
+│   ├── notifications.ts
+│   ├── waterNotifications.ts
+│   └── ...
+└── types/            # TypeScript type tanımları
+    ├── medication.ts
+    ├── water.ts
+    ├── routine.ts
+    ├── cycle.ts
+    └── daily.ts
 ```
 
-## 📝 Lisans
+## 🎯 Kullanım
 
-Bu proje özel kullanım içindir.
+### İlaç Ekleme
+1. İlaçlar sekmesine gidin
+2. Sağ üstteki + butonuna tıklayın
+3. İlaç bilgilerini girin (isim, dozaj, saat)
+4. Tekrarlama tipini seçin (günlük, haftalık, özel, vb.)
+5. Bitiş tarihi belirleyin (opsiyonel)
+6. Kaydet
+
+### Su Hatırlatması Ekleme
+1. Su sekmesine gidin
+2. Sağ üstteki + butonuna tıklayın
+3. Su miktarı ve saat bilgisini girin
+4. Toplu hatırlatma oluşturabilirsiniz (başlangıç-bitiş saati ve aralık)
+5. Kaydet
+
+### Rutin Oluşturma
+1. Rutinler sekmesine gidin
+2. Sağ üstteki + butonuna tıklayın
+3. Rutin başlığı, açıklama ve saat bilgisini girin
+4. Tekrarlama tipini seçin
+5. Alt görevler ekleyin (opsiyonel)
+6. Kaydet
+
+### Aylık Hedef Ekleme
+1. Döngü sekmesine gidin
+2. "Bu Ayın Hedefleri" bölümünde + butonuna tıklayın
+3. Hedef başlığı, açıklama ve hedef sayıyı girin
+4. Kaydet
+
+### Regl Döngüsü Takibi
+1. Döngü sekmesine gidin
+2. Mod tipini "Regl Döngüsü Takibi" olarak değiştirin
+3. İlk kurulum için "Regl Döngüsü Bilgilerini Ayarla" butonuna tıklayın
+4. Son adet tarihi, döngü uzunluğu ve adet süresini girin
+5. Kaydet
+
+## 🔔 Bildirimler
+
+Uygulama şu modüller için push notification desteği sunar:
+- ✅ İlaç hatırlatmaları
+- ✅ Su içme hatırlatmaları
+- ⚠️ Günlük rutin hatırlatmaları (planlanmış, henüz aktif değil)
+- ⚠️ Döngü hatırlatmaları (planlanmış, henüz aktif değil)
+
+## 📝 Notlar
+
+- Tüm veriler cihazda saklanır (local storage)
+- Verileri dışa aktarabilirsiniz (JSON formatında)
+- Bildirimler için gerekli izinler uygulama açılışında istenir
+- Android'de bildirim kanalları otomatik oluşturulur
 
 ## 🤝 Katkıda Bulunma
 
-Bu proje kişisel bir projedir. Sorularınız veya önerileriniz için issue açabilirsiniz.
+Katkılarınızı bekliyoruz! Lütfen önce bir issue açın veya mevcut issue'lara göz atın.
 
-## 📞 Destek
+## 📄 Lisans
 
-Sorun yaşarsanız:
-1. Cache'i temizleyin
-2. `node_modules` klasörünü silip yeniden yükleyin
-3. Expo Go uygulamasını güncelleyin
-4. Cihazı yeniden başlatın
-
----
-
-**Not:** Bu uygulama tıbbi tavsiye vermez. İlaç kullanımı için mutlaka doktorunuza danışın.
+Bu proje private bir projedir.
