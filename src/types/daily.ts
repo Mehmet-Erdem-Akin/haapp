@@ -17,8 +17,10 @@ export interface DailyRecord {
 
 export interface DailyContextType {
   records: DailyRecord[];
-  markMedicationTaken: (medicationId: string, date?: string) => Promise<void>;
+  markMedicationTaken: (medicationId: string, time?: string, date?: string) => Promise<void>;
   markWaterDrunk: (amount: number, date?: string) => Promise<void>;
+  removeWaterEntry: (time: string, date?: string) => Promise<void>;
+  removeMedicationEntry: (medicationId: string, date?: string) => Promise<void>;
   getTodayRecord: () => DailyRecord;
   getTotalWaterToday: () => number; // ml cinsinden
   loadRecords: () => Promise<void>;

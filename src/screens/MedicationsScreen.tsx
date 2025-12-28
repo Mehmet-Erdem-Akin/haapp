@@ -1,25 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
     View,
     Text,
-    FlatList,
-    TouchableOpacity,
+    ScrollView,
     Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 import { useMedications } from '../context/MedicationContext';
 import { useDaily } from '../context/DailyContext';
 import { Medication } from '../types/medication';
 import AddMedicationScreen from './AddMedicationScreen';
-import MedicationItem from '../components/MedicationItem';
+import Header from '../components/v2/Header';
+import CircularProgress from '../components/v2/CircularProgress';
+import MedicationsDailyStats from '../components/v2/MedicationsDailyStats';
+import MedicationsWeeklyChart from '../components/v2/MedicationsWeeklyChart';
+import MedicationEntriesList from '../components/v2/MedicationEntriesList';
 import { ActionIcons, TabIcons } from '../utils/icons';
 
 const MedicationsScreen: React.FC = () => {
     const { medications, deleteMedication } = useMedications();
-    const { markMedicationTaken, getTodayRecord } = useDaily();
+    const { markMedicationTaken, removeMedicationEntry, getTodayRecord, records } = useDaily();
     const [showAddScreen, setShowAddScreen] = useState(false);
     const [editingMedication, setEditingMedication] = useState<Medication | null>(null);
+
+    const todayRecord = getTodayRecord();
+    const totalMedications = todayRecord.medications.length;
+    const takenMedications = todayRecord.medications.filter((m) => m.taken).length;
+    const percentage = totalMedications > 0 ? Math.min((takenMedications / totalMedications) * 100, 100) : 0;
+
+    // Haftalık veri hesapla
+    const weeklyData = useMemo(() => {
+        const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+        const data = [];
+        
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            date.setHours(0, 0, 0, 0);
+            
+            const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            const record = records.find(r => r.date === dateStr);
+            
+            const total = record?.medications.length || 0;
+            const taken = record?.medications.filter(m => m.taken).length || 0;
+            
+            data.push({
+                day: days[date.getDay() === 0 ? 6 : date.getDay() - 1],
+                taken,
+                total,
+            });
+        }
+        
+        return data;
+    }, [records]);
 
     const handleAddPress = () => {
         setEditingMedication(null);
@@ -46,21 +79,42 @@ const MedicationsScreen: React.FC = () => {
         );
     };
 
-    const handleTakenPress = async (medication: Medication) => {
+    const handleMarkTaken = async (medicationId: string, time: string) => {
         try {
-            await markMedicationTaken(medication.id);
-            Alert.alert('Başarılı', `${medication.name} içildi olarak işaretlendi.`);
+            await markMedicationTaken(medicationId, time);
         } catch (error) {
             Alert.alert('Hata', 'İlaç kaydı güncellenirken bir hata oluştu.');
         }
+    };
+
+    const handleDeleteMedicationEntry = async (medicationId: string) => {
+        const medication = medications.find((m) => m.id === medicationId);
+        const medicationName = medication?.name || 'İlaç';
+        
+        Alert.alert(
+            'İlaç Kaydını Sil',
+            `"${medicationName}" ilaç kaydını bugünün kayıtlarından silmek istediğinize emin misiniz?`,
+            [
+                { text: 'İptal', style: 'cancel' },
+                {
+                    text: 'Sil',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await removeMedicationEntry(medicationId);
+                        } catch (error) {
+                            Alert.alert('Hata', 'İlaç kaydı silinirken bir hata oluştu.');
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     const handleCloseAddScreen = () => {
         setShowAddScreen(false);
         setEditingMedication(null);
     };
-
-    const todayRecord = getTodayRecord();
 
     if (showAddScreen) {
         return (
@@ -73,62 +127,73 @@ const MedicationsScreen: React.FC = () => {
 
     return (
         <LinearGradient
-            colors={['#E0E8FF', '#C0D1FF', '#A0B5FF']}
-            className="flex-1"
+            colors={['#F8FAFC', '#F1F5F9']}
             style={{ flex: 1 }}
         >
-            <View
-                className="bg-white pt-5 pb-5 px-5 rounded-b-[20px] border border-gray-200 overflow-hidden"
-                style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 5 }}
-            >
-                <View className="flex-row items-center mb-1">
-                    <TabIcons.Medication size={32} color="#002BE0" />
-                    <Text className="text-[32px] font-bold text-primary ml-2">İlaçlar</Text>
-                </View>
-                <Text className="text-base text-gray-700">İlaç Hatırlatmaları</Text>
-            </View>
+            {/* Header */}
+            <Header
+                title="İlaçlar"
+                subtitle="İlaç Hatırlatmaları"
+                icon={<TabIcons.Medication size={24} color="#FFFFFF" />}
+                iconGradient={['#8B5CF6', '#A78BFA']}
+                rightAction={{
+                    icon: <ActionIcons.Add size={20} color="#6B7280" />,
+                    onPress: handleAddPress,
+                }}
+            />
 
-            {medications.length === 0 ? (
-                <View className="flex-1 justify-center items-center px-10">
-                    <Text className="text-xl font-semibold text-primary mb-2 text-center">Henüz ilaç eklenmemiş</Text>
-                    <Text className="text-sm text-gray-700 text-center">
-                        Sağ alttaki butona tıklayarak ilaç ekleyebilirsiniz
-                    </Text>
-                </View>
-            ) : (
-                <FlatList
-                    data={medications}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => {
-                        const isTaken = todayRecord.medications.find(
-                            (m) => m.medicationId === item.id
-                        )?.taken || false;
+            <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>
+                {medications.length === 0 ? (
+                    <View className="bg-white rounded-2xl p-8 items-center border border-gray-200"
+                        style={{
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.05,
+                            shadowRadius: 4,
+                            elevation: 2,
+                        }}
+                    >
+                        <TabIcons.Medication size={48} color="#9CA3AF" />
+                        <Text className="text-xl font-semibold text-gray-900 mt-4 mb-2 text-center">
+                            Henüz ilaç eklenmemiş
+                        </Text>
+                        <Text className="text-sm text-gray-600 text-center">
+                            Sağ üstteki butona tıklayarak ilaç ekleyebilirsiniz
+                        </Text>
+                    </View>
+                ) : (
+                    <>
+                        {/* Circular Progress */}
+                        <CircularProgress 
+                            percentage={percentage}
+                            totalToday={takenMedications}
+                            total={totalMedications}
+                            icon={<TabIcons.Medication size={32} color="#8B5CF6" />}
+                            unit="ilaç"
+                            gradientColors={['#8B5CF6', '#A78BFA']}
+                            successMessage="Tüm ilaçlarınızı aldınız"
+                            defaultMessage="Günlük ilaç takibi"
+                        />
 
-                        return (
-                            <MedicationItem
-                                medication={item}
-                                isTaken={isTaken}
-                                onEdit={() => handleEditPress(item)}
-                                onDelete={() => handleDeletePress(item)}
-                                onTaken={() => handleTakenPress(item)}
-                            />
-                        );
-                    }}
-                    style={{ flex: 1 }}
-                    contentContainerStyle={{ padding: 16 }}
-                />
-            )}
+                        {/* Daily Stats */}
+                        <MedicationsDailyStats 
+                            entries={todayRecord.medications}
+                            totalToday={takenMedications}
+                            totalMedications={totalMedications}
+                        />
 
-            <TouchableOpacity
-                className="absolute right-5 bottom-5 w-[64px] h-[64px] rounded-[32px] bg-primary justify-center items-center"
-                onPress={handleAddPress}
-                activeOpacity={0.8}
-                accessibilityLabel="Yeni ilaç ekle"
-                accessibilityRole="button"
-                style={{ shadowColor: '#002BE0', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 8 }}
-            >
-                <ActionIcons.Add size={32} color="#FFFFFF" />
-            </TouchableOpacity>
+                        {/* Medication Entries List */}
+                        <MedicationEntriesList 
+                            entries={todayRecord.medications}
+                            onMarkTaken={handleMarkTaken}
+                            onDelete={handleDeleteMedicationEntry}
+                        />
+
+                        {/* Weekly Chart */}
+                        <MedicationsWeeklyChart data={weeklyData} />
+                    </>
+                )}
+            </ScrollView>
         </LinearGradient>
     );
 };

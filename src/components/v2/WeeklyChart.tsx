@@ -51,3 +51,4 @@ const WeeklyChart: React.FC<WeeklyChartProps> = ({ data, dailyGoal }) => {
 
 export default WeeklyChart;
 
+

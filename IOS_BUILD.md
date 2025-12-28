@@ -173,3 +173,4 @@ eas build --clear-cache --platform ios
 - [TestFlight Rehberi](https://developer.apple.com/testflight/)
 
 
+

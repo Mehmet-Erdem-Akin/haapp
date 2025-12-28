@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Medication } from '../types/medication';
 import { ActionIcons } from '../utils/icons';
+import { getMedicationCountForToday } from '../utils/medicationHelpers';
 
 interface MedicationItemProps {
   medication: Medication;
@@ -19,17 +20,16 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
   onTaken,
 }) => {
   return (
-    <View 
-      className={`rounded-[20px] p-4 mb-3 flex-row justify-between items-center border overflow-hidden ${
-        isTaken ? 'border-l-4 border-l-success border-success-200' : 'border-gray-300'
-      }`}
-      style={{ 
+    <View
+      className={`rounded-[20px] p-4 mb-3 flex-row justify-between items-center border overflow-hidden ${isTaken ? 'border-l-4 border-l-success border-success-200' : 'border-gray-300'
+        }`}
+      style={{
         backgroundColor: '#FFFFFF',
-        shadowColor: '#002BE0', 
-        shadowOffset: { width: 0, height: 2 }, 
-        shadowOpacity: 0.15, 
-        shadowRadius: 8, 
-        elevation: 3 
+        shadowColor: '#002BE0',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        elevation: 3
       }}
     >
       <View className="flex-1">
@@ -43,11 +43,20 @@ const MedicationItem: React.FC<MedicationItemProps> = ({
           )}
         </View>
         <Text className="text-base text-gray-700 mb-2">{medication.dosage}</Text>
-        <View className="flex-row items-center">
+        <View className="flex-row items-center mb-1">
           <ActionIcons.Time size={16} color="#6B7280" />
           <Text className="text-sm text-gray-600 ml-1.5 mr-1.5">Saat:</Text>
           <Text className="text-base font-semibold text-primary">{medication.time}</Text>
         </View>
+        {getMedicationCountForToday(medication) > 0 && (
+          <View className="flex-row items-center flex-wrap gap-2 mt-1">
+            <View className="bg-blue-50 border border-blue-200 rounded-lg px-2 py-1">
+              <Text className="text-xs font-semibold text-blue-700">
+                Bugün {getMedicationCountForToday(medication)} kez
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
       <View className="flex-row gap-2">
         {!isTaken && onTaken && (

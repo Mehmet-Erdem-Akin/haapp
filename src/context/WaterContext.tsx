@@ -2,14 +2,17 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { WaterReminder, WaterContextType } from '../types/water';
 import { waterStorageService } from '../services/waterStorage';
 import { waterNotificationService } from '../services/waterNotifications';
+import { settingsStorageService } from '../services/settingsStorage';
 
 const WaterContext = createContext<WaterContextType | undefined>(undefined);
 
 export const WaterProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [reminders, setReminders] = useState<WaterReminder[]>([]);
+  const [waterGoal, setWaterGoalState] = useState<number>(2500);
 
   useEffect(() => {
     loadReminders();
+    loadWaterGoal();
   }, []);
 
   useEffect(() => {
@@ -124,10 +127,31 @@ export const WaterProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
+  const loadWaterGoal = async () => {
+    try {
+      const goal = await settingsStorageService.getWaterGoal();
+      setWaterGoalState(goal);
+    } catch (error) {
+      console.error('Su hedefi yüklenirken hata:', error);
+    }
+  };
+
+  const setWaterGoal = async (goal: number) => {
+    try {
+      await settingsStorageService.saveWaterGoal(goal);
+      setWaterGoalState(goal);
+    } catch (error) {
+      console.error('Su hedefi kaydedilirken hata:', error);
+      throw error;
+    }
+  };
+
   return (
     <WaterContext.Provider
       value={{
         reminders,
+        waterGoal,
+        setWaterGoal,
         addReminder,
         addBulkReminders,
         updateReminder,

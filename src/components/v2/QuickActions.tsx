@@ -38,3 +38,4 @@ const QuickActions: React.FC<QuickActionsProps> = ({ onAddWater }) => {
 
 export default QuickActions;
 
+

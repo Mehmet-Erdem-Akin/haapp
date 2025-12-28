@@ -11,21 +11,24 @@ import { useWater } from '../context/WaterContext';
 import { useDaily } from '../context/DailyContext';
 import { WaterReminder } from '../types/water';
 import AddWaterReminderScreen from './AddWaterReminderScreen';
+import Header from '../components/v2/Header';
 import CircularProgress from '../components/v2/CircularProgress';
 import QuickActions from '../components/v2/QuickActions';
 import DailyStats from '../components/v2/DailyStats';
 import WeeklyChart from '../components/v2/WeeklyChart';
-import { WaterIcons } from '../utils/icons';
+import WaterEntriesList from '../components/v2/WaterEntriesList';
+import WaterGoalModal from '../components/v2/WaterGoalModal';
+import { WaterIcons, ActionIcons } from '../utils/icons';
 
 const WaterScreen: React.FC = () => {
-  const { reminders } = useWater();
-  const { markWaterDrunk, getTotalWaterToday, getTodayRecord, records } = useDaily();
+  const { reminders, waterGoal, setWaterGoal } = useWater();
+  const { markWaterDrunk, removeWaterEntry, getTotalWaterToday, getTodayRecord, records } = useDaily();
   const [showAddScreen, setShowAddScreen] = useState(false);
+  const [showGoalModal, setShowGoalModal] = useState(false);
   const [editingReminder, setEditingReminder] = useState<WaterReminder | null>(null);
 
-  const dailyGoal = 2500; // ml
   const totalWater = getTotalWaterToday();
-  const percentage = Math.min((totalWater / dailyGoal) * 100, 100);
+  const percentage = Math.min((totalWater / waterGoal) * 100, 100);
   const todayRecord = getTodayRecord();
   
   // Haftalık veri hesapla
@@ -65,6 +68,27 @@ const WaterScreen: React.FC = () => {
     }
   };
 
+  const handleDeleteWater = async (time: string) => {
+    Alert.alert(
+      'Su Kaydını Sil',
+      'Bu su kaydını silmek istediğinize emin misiniz?',
+      [
+        { text: 'İptal', style: 'cancel' },
+        {
+          text: 'Sil',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await removeWaterEntry(time);
+            } catch (error) {
+              Alert.alert('Hata', 'Su kaydı silinirken bir hata oluştu.');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const handleCloseAddScreen = () => {
     setShowAddScreen(false);
     setEditingReminder(null);
@@ -79,8 +103,8 @@ const WaterScreen: React.FC = () => {
     );
   }
 
-  // Bugünkü girişleri sırala (en yeni önce)
-  const todayEntries = [...todayRecord.water].reverse();
+  // Bugünkü girişleri WaterEntriesList'te sıralanıyor
+  const todayEntries = [...todayRecord.water];
 
   return (
     <LinearGradient
@@ -88,46 +112,29 @@ const WaterScreen: React.FC = () => {
       style={{ flex: 1 }}
     >
       {/* Header */}
-      <View 
-        className="bg-white"
-        style={{
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-          elevation: 2,
+      <Header
+        title="Aqua"
+        subtitle="Su Takip"
+        icon={<WaterIcons.Drop size={24} color="#FFFFFF" />}
+        iconGradient={['#3B82F6', '#06B6D4']}
+        rightAction={{
+          icon: <ActionIcons.Add size={20} color="#6B7280" />,
+          onPress: handleAddPress,
         }}
-      >
-        <View className="px-6 py-4 flex-row items-center justify-between">
-          <View className="flex-row items-center gap-3">
-            <LinearGradient
-              colors={['#3B82F6', '#06B6D4']}
-              className="w-10 h-10 rounded-xl items-center justify-center"
-              style={{ width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center' }}
-            >
-              <WaterIcons.Drop size={24} color="#FFFFFF" />
-            </LinearGradient>
-            <View>
-              <Text className="font-bold text-gray-900 text-lg">Aqua</Text>
-              <Text className="text-xs text-gray-500">Su Takip</Text>
-            </View>
-            </View>
-          <TouchableOpacity
-            onPress={handleAddPress}
-            className="p-2 rounded-lg"
-            activeOpacity={0.7}
-          >
-            <WaterIcons.Drop size={20} color="#6B7280" />
-          </TouchableOpacity>
-        </View>
-      </View>
+      />
 
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>
         {/* Circular Progress */}
         <CircularProgress 
           percentage={percentage}
           totalToday={totalWater}
-          dailyGoal={dailyGoal}
+          total={waterGoal}
+          icon={<WaterIcons.Drop size={32} color="#3B82F6" />}
+          unit="ml"
+          gradientColors={['#3B82F6', '#06B6D4']}
+          onPress={() => setShowGoalModal(true)}
+          successMessage="Günlük hedefinizin tamamlandı"
+          defaultMessage="Günlük hedefiniz"
         />
 
         {/* Quick Actions */}
@@ -137,12 +144,26 @@ const WaterScreen: React.FC = () => {
         <DailyStats 
           entries={todayEntries}
           totalToday={totalWater}
-          dailyGoal={dailyGoal}
+          dailyGoal={waterGoal}
+        />
+
+        {/* Water Entries List */}
+        <WaterEntriesList 
+          entries={todayEntries}
+          onDelete={handleDeleteWater}
         />
 
         {/* Weekly Chart */}
-        <WeeklyChart data={weeklyData} dailyGoal={dailyGoal} />
+        <WeeklyChart data={weeklyData} dailyGoal={waterGoal} />
       </ScrollView>
+
+      {/* Water Goal Modal */}
+      <WaterGoalModal
+        visible={showGoalModal}
+        currentGoal={waterGoal}
+        onClose={() => setShowGoalModal(false)}
+        onSave={setWaterGoal}
+      />
     </LinearGradient>
   );
 };

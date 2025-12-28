@@ -48,6 +48,9 @@ export const ActionIcons = {
   Hourglass: ({ size = 20, color = '#F59E0B' }: IconProps) => (
     <MaterialIcons name="hourglass-empty" size={size} color={color} />
   ),
+  Settings: ({ size = 20, color = '#6B7280' }: IconProps) => (
+    <MaterialIcons name="settings" size={size} color={color} />
+  ),
 };
 
 // Status Icons
