@@ -8,9 +8,9 @@ Modern ve kullanıcı dostu bir React Native sağlık takip uygulaması. İlaç 
 
 <div align="center">
 
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-01.jpeg" alt="İlaçlar Ekranı" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-02.jpeg" alt="Su Takibi Ekranı" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-03.jpeg" alt="Günlük Takip Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-01.jpeg?raw=true" alt="İlaçlar Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-02.jpeg?raw=true" alt="Su Takibi Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-03.jpeg?raw=true" alt="Günlük Takip Ekranı" width="250" />
 
 </div>
 
@@ -18,9 +18,9 @@ Modern ve kullanıcı dostu bir React Native sağlık takip uygulaması. İlaç 
 
 <div align="center">
 
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-04.jpeg" alt="Rutinler Ekranı" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-05.jpeg" alt="Döngü Ekranı" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-06.jpeg" alt="Rutin Ekleme Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-04.jpeg?raw=true" alt="Rutinler Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-05.jpeg?raw=true" alt="Döngü Ekranı" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-06.jpeg?raw=true" alt="Rutin Ekleme Ekranı" width="250" />
 
 </div>
 
@@ -28,16 +28,16 @@ Modern ve kullanıcı dostu bir React Native sağlık takip uygulaması. İlaç 
 
 <div align="center">
 
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-07.jpeg" alt="İlaç Detayları" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-08.jpeg" alt="Su İstatistikleri" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-09.jpeg" alt="Döngü Ayarları" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-07.jpeg?raw=true" alt="İlaç Detayları" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-08.jpeg?raw=true" alt="Su İstatistikleri" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-09.jpeg?raw=true" alt="Döngü Ayarları" width="250" />
 
 </div>
 
 <div align="center">
 
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-10.jpeg" alt="Aylık Hedefler" width="250" />
-<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/main/src/images/screenshot-11.jpeg" alt="Rutin Detayları" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-10.jpeg?raw=true" alt="Aylık Hedefler" width="250" />
+<img src="https://github.com/Mehmet-Erdem-Akin/haapp/blob/readme_update/src/images/screenshot-11.jpeg?raw=true" alt="Rutin Detayları" width="250" />
 
 </div>
 
