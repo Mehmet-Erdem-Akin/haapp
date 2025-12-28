@@ -4,6 +4,7 @@ import {
     Text,
     ScrollView,
     Alert,
+    TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useMedications } from '../context/MedicationContext';
@@ -136,10 +137,14 @@ const MedicationsScreen: React.FC = () => {
                 subtitle="İlaç Hatırlatmaları"
                 icon={<TabIcons.Medication size={24} color="#FFFFFF" />}
                 iconGradient={['#8B5CF6', '#A78BFA']}
-                rightAction={{
-                    icon: <ActionIcons.Add size={20} color="#6B7280" />,
-                    onPress: handleAddPress,
-                }}
+                rightAction={
+                    <TouchableOpacity
+                        onPress={handleAddPress}
+                        className="bg-primary w-12 h-12 rounded-full items-center justify-center"
+                    >
+                        <ActionIcons.Add size={24} color="#FFFFFF" />
+                    </TouchableOpacity>
+                }
             />
 
             <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>

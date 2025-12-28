@@ -5,6 +5,8 @@ import { BlurView } from 'expo-blur';
 import MedicationsScreen from '../screens/MedicationsScreen';
 import WaterScreen from '../screens/WaterScreen';
 import DailyScreen from '../screens/DailyScreen';
+import RoutinesScreen from '../screens/RoutinesScreen';
+import CycleScreen from '../screens/CycleScreen';
 import { TabIcons } from '../utils/icons';
 
 const Tab = createBottomTabNavigator();
@@ -58,6 +60,26 @@ const TabNavigator: React.FC = () => {
                     tabBarLabel: 'Günlük',
                     tabBarIcon: ({ color }) => (
                         <TabIcons.Daily size={24} color={color} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Routines"
+                component={RoutinesScreen}
+                options={{
+                    tabBarLabel: 'Rutinler',
+                    tabBarIcon: ({ color }) => (
+                        <TabIcons.Routine size={24} color={color} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Cycle"
+                component={CycleScreen}
+                options={{
+                    tabBarLabel: 'Döngü',
+                    tabBarIcon: ({ color }) => (
+                        <TabIcons.Cycle size={24} color={color} />
                     ),
                 }}
             />

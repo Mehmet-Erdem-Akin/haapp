@@ -32,8 +32,8 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children
   const addMedication = async (medicationData: Omit<Medication, 'id' | 'notificationId'>) => {
     try {
       const newMedication: Medication = {
-        scheduleType: 'daily', // Default schedule type
         ...medicationData,
+        scheduleType: medicationData.scheduleType || 'daily', // Default schedule type if not provided
         id: Date.now().toString(),
       };
 

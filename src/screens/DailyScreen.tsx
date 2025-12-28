@@ -40,7 +40,7 @@ const DailyScreen: React.FC = () => {
   return (
     <LinearGradient
       colors={['#F8FAFC', '#F1F5F9']}
-      style={{ flex: 1 }}
+      style={{ flex: 1, marginTop: 24 }}
     >
       {/* Header */}
       <Header
@@ -48,18 +48,23 @@ const DailyScreen: React.FC = () => {
         subtitle="Bugünün Özeti"
         icon={<TabIcons.Daily size={24} color="#FFFFFF" />}
         iconGradient={['#10B981', '#34D399']}
-        rightAction={{
-          icon: <ActionIcons.Download size={20} color="#6B7280" />,
-          onPress: handleExport,
-        }}
+        rightAction={
+          <TouchableOpacity
+            onPress={handleExport}
+            className="p-2 rounded-lg"
+            activeOpacity={0.7}
+          >
+            <ActionIcons.Download size={20} color="#6B7280" />
+          </TouchableOpacity>
+        }
       />
 
-      <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>
+      <ScrollView className="flex-1" contentContainerStyle={{ padding: 24, marginTop: 24 }}>
         {/* Stats Cards */}
         <View className="flex-row gap-3 mb-6">
-          <View 
+          <View
             className="flex-1 rounded-2xl p-4 items-center border border-gray-200 overflow-hidden bg-white"
-            style={{ 
+            style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.05,
@@ -70,9 +75,9 @@ const DailyScreen: React.FC = () => {
             <Text className="text-2xl font-bold text-gray-900 mb-1">{takenMedications.length}</Text>
             <Text className="text-xs text-gray-600 text-center">İçilen İlaç</Text>
           </View>
-          <View 
+          <View
             className="flex-1 rounded-2xl p-4 items-center border border-gray-200 overflow-hidden bg-white"
-            style={{ 
+            style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.05,
@@ -83,9 +88,9 @@ const DailyScreen: React.FC = () => {
             <Text className="text-2xl font-bold text-gray-900 mb-1">{pendingMedications.length}</Text>
             <Text className="text-xs text-gray-600 text-center">Bekleyen İlaç</Text>
           </View>
-          <View 
+          <View
             className="flex-1 rounded-2xl p-4 items-center border border-gray-200 overflow-hidden bg-white"
-            style={{ 
+            style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.05,

@@ -117,10 +117,14 @@ const WaterScreen: React.FC = () => {
         subtitle="Su Takip"
         icon={<WaterIcons.Drop size={24} color="#FFFFFF" />}
         iconGradient={['#3B82F6', '#06B6D4']}
-        rightAction={{
-          icon: <ActionIcons.Add size={20} color="#6B7280" />,
-          onPress: handleAddPress,
-        }}
+        rightAction={
+          <TouchableOpacity
+            onPress={handleAddPress}
+            className="bg-primary w-12 h-12 rounded-full items-center justify-center"
+          >
+            <ActionIcons.Add size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+        }
       />
 
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>

@@ -17,6 +17,12 @@ export const TabIcons = {
   Daily: ({ size = 24, color = '#002BE0' }: IconProps) => (
     <MaterialIcons name="bar-chart" size={size} color={color} />
   ),
+  Routine: ({ size = 24, color = '#002BE0' }: IconProps) => (
+    <MaterialIcons name="check-circle" size={size} color={color} />
+  ),
+  Cycle: ({ size = 24, color = '#002BE0' }: IconProps) => (
+    <MaterialIcons name="event-repeat" size={size} color={color} />
+  ),
 };
 
 // Action Icons

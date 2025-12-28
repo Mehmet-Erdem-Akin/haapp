@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { MedicationProvider, useMedications } from '../context/MedicationContext';
 import { WaterProvider } from '../context/WaterContext';
 import { DailyProvider } from '../context/DailyContext';
+import { RoutineProvider } from '../context/RoutineContext';
+import { CycleProvider } from '../context/CycleContext';
 
 const DailyProviderWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { medications } = useMedications();
@@ -17,9 +19,13 @@ export const AppProviders: React.FC<{ children: ReactNode }> = ({ children }) =>
   return (
     <MedicationProvider>
       <WaterProvider>
-        <DailyProviderWrapper>
-          {children}
-        </DailyProviderWrapper>
+        <RoutineProvider>
+          <CycleProvider>
+            <DailyProviderWrapper>
+              {children}
+            </DailyProviderWrapper>
+          </CycleProvider>
+        </RoutineProvider>
       </WaterProvider>
     </MedicationProvider>
   );
